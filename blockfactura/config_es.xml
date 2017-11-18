@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>blockfactura</name>
+	<displayName><![CDATA[Factura el&eacute;ctronica]]></displayName>
+	<version><![CDATA[3.0]]></version>
+	<description><![CDATA[Este m&oacute;dulo te permite crear factura electr&oacute;nica]]></description>
+	<author><![CDATA[factura.com]]></author>
+	<tab><![CDATA[billing_invoicing]]></tab>
+	<confirmUninstall><![CDATA[Desinstalar ?]]></confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>
