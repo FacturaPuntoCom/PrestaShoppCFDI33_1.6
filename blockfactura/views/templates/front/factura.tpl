@@ -233,11 +233,46 @@
 			</div>
 		</div>
 		<div class="row">
-		<div class="col-md-12 col-lg-12 col-xs-12">
 			<legend id="legend-tree" style="border-color: {$colors|escape:'htmlall':'UTF-8'};">
 				{l s='Details' mod='blockfactura'}
 				<hr style="height: 2px; width:100%; background-color: {$colors|escape:'htmlall':'UTF-8'}; opacity: 0.6;">
 			</legend>
+			<div class="col-md-4 col-lg-4 col-xs-12">
+				<div class="input-group">
+					<label for="select-usocfdi"  style="font-size: 18px;">* {l s='Uso Cfdi' mod='blockfactura'}  &nbsp;</label>
+						<select id="select-usocfdi" class="input-cap f-input f-select">
+							<option value="0">{l s='Select an option' mod='blockfactura'}</option>
+							<option value="G01">{l s='Adquisición de mercancias' mod='blockfactura'}</option>
+							<option value="G02">{l s='Devoluciones, descuentos o bonificaciones' mod='blockfactura'}</option>
+							<option value="G03">{l s='Gastos en general' mod='blockfactura'}</option>
+							<option value="I01">{l s='Construcciones' mod='blockfactura'}</option>
+							<option value="I02">{l s='Mobilario y equipo de oficina por inversiones' mod='blockfactura'}</option>
+							<option value="I03">{l s='Equipo de transporte' mod='blockfactura'}</option>
+							<option value="I04">{l s='Equipo de computo y accesorios' mod='blockfactura'}</option>
+							<option value="I05">{l s='Dados, troqueles, moldes, matrices y herramental' mod='blockfactura'}</option>
+							<option value="I06">{l s='Comunicaciones telefónicas' mod='blockfactura'}</option>
+							<option value="I07">{l s='Comunicaciones satelitales' mod='blockfactura'}</option>
+							<option value="I08">{l s='Otra maquinaria y equipo' mod='blockfactura'}</option>
+							<option value="D01">{l s='Honorarios médicos, dentales y gastos hospitalarios' mod='blockfactura'}</option>
+							<option value="D02">{l s='Gastos médicos por incapacidad o discapacidad' mod='blockfactura'}</option>
+							<option value="D03>{l s='Gastos funerales' mod='blockfactura'}</option>
+							<option value="D04">{l s='Donativos' mod='blockfactura'}</option>
+							<option value="D05">{l s='Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)' mod='blockfactura'}</option>
+							<option value="D06">{l s='Aportaciones voluntarias al SAR' mod='blockfactura'}</option>
+							<option value="D07">{l s='Primas por seguros de gastos médicos' mod='blockfactura'}</option>
+							<option value="D08">{l s='Gastos de transportación escolar obligatoria' mod='blockfactura'}</option>
+							<option value="D09">{l s='Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones' mod='blockfactura'}</option>
+							<option value="D10">{l s='Pagos por servicios educativos (colegiaturas)' mod='blockfactura'}</option>
+							<option value="P01">{l s='Por definir' mod='blockfactura'}</option>
+						</select>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="row">
+		<div class="col-md-12 col-lg-12 col-xs-12">
+			
 			<div class="col-md-6 col-lg-6 col-xs-12">
 				<div class="input-group">
 						<label for="select-payment"  style="font-size: 18px;">* {l s='Payment method' mod='blockfactura'}  &nbsp;</label>

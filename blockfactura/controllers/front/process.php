@@ -327,12 +327,17 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             switch ($product['tax_rate']) {
               case 16:
                 $base_calc = Tools::ps_round($unit_price, 2) * $product['product_quantity'];
+                $decimas = explode(".", $base_calc);
+                //verificamos que no exceda el máximo de decimales
+                if(strlen($decimas[1]) > 6) {
+                    $base_calc = round($base_calc, 6);
+                }
                 $taxes_product[] = array(
-                  'Base' => Tools::ps_round($base_calc, 2),
+                  'Base' => $base_calc,
                   'Impuesto' => '002',
                   'TipoFactor' => 'Tasa',
                   'TasaOCuota' => '0.16',
-                  'Importe' => Tools::ps_round($base_calc * .16, 2)
+                  'Importe' => Tools::ps_round($base_calc * .16, 6)
                 );
                 $traslados = array('Traslados' => $taxes_product);
               break;
@@ -433,20 +438,26 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $seriesget = Curls::frontCurl($this->module->urlapi . 'series', 'get', $this->module->keyapi, $this->module->keysecret);
         $decode_series = Tools::jsonDecode($seriesget, true);
         foreach ($decode_series['data'] as $key => $serie) {
-          if ($serie['SerieName'] == $this->module->serie) {
-            $id_serie = $serie['SerieID'];
-            break;
-          }else {
-            return die(Tools::jsonEncode(array('response' => 'error', 'message' => 'La serie con que intentas facturar no existe en tu catálogo de series y folios')));
-          }
+            
+            if ($serie['SerieName'] == $this->module->serie) {
+                $id_serie = $serie['SerieID'];
+            }
         }
-
+        if ($id_serie == '' || $id_serie == null) {
+            return die(Tools::jsonEncode(array('response' => 'error', 'message' => 'La serie con que intentas facturar no existe en tu catálogo de series y folios')));
+        }
+        //compruebo si el cliente le pone un uso de cfdi
+        if (Tools::getValue('usocfdi') != '0') {
+            $usocfdi = Tools::getValue('usocfdi');
+        }else {
+            $usocfdi = $this->module->u_cfdi; 
+        }
         $params = array(
                  'Receptor' => array('UID' => Tools::getValue('uid')),
                  'TipoCfdi' => 'factura',
                  'Redondeo' => 2,
                  'Conceptos' => $products_invoice,
-                 'UsoCFDI' => $this->module->u_cfdi,
+                 'UsoCFDI' => $usocfdi,
                  'Cuenta' => $num_cta,
                  'MetodoPago' => 'PUE',
                  'FormaPago' => Tools::getValue('method'),

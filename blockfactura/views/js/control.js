@@ -55,6 +55,8 @@ $('#btn-invoice').click(function (event){
 
       var selected_method = $( "#select-payment option:selected" ).val();
 
+      var selected_usocfdi = $("#select-usocfdi option:selected").val();
+
       var num_cta_method  = $( "#f-num-cta" ).val();
 
       if(selected_method == 04 || selected_method == 28 || selected_method == 03){
@@ -73,7 +75,7 @@ if(selected_method == 0){
   $("#alerts").show();
   return false;
 }else{
-    invoice(get_rfc, get_uid, num_order, selected_method, num_cta_method);
+    invoice(get_rfc, get_uid, num_order, selected_method, num_cta_method,selected_usocfdi);
 }
   });
 
@@ -181,7 +183,7 @@ function fillFormTwo(data){
   $('#data-colonia').val(data.Data.Colonia);
   $('#data-cp').val(data.Data.CodigoPostal);
   $('#data-ciudad').val(data.Data.Ciudad);
-  $('#data-delegacion').val(data.Data.Delegacion);
+  $('#data-delegacion').val(data.Data.Estado);
 
   $('#UID').val(data.Data.UID);
 }
@@ -270,7 +272,7 @@ for (var key=0, size=totals.length; key<size; key++){
 }
 
 
-function invoice(rfc, uid, order, method, num_cta){
+function invoice(rfc, uid, order, method, num_cta,usocfdi){
   swal({
     title: "Atendiendo tu petición",
     text: "facturando...",
@@ -280,7 +282,7 @@ function invoice(rfc, uid, order, method, num_cta){
   $.ajax({
     type: 'post',
     url: baseUri+'module/blockfactura/process',
-    data: 'action=invoice&rfc='+rfc+'&uid='+uid+'&order='+order+'&method='+method+'&num_cta='+num_cta,
+    data: 'action=invoice&rfc='+rfc+'&uid='+uid+'&order='+order+'&method='+method+'&num_cta='+num_cta+'&usocfdi='+usocfdi,
     dataType: 'json',
     success: function(json){
       console.log(json);
