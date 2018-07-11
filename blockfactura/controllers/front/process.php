@@ -169,7 +169,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
           'codpos' => Tools::getValue('data-cp'),
           'colonia' => Tools::getValue('data-colonia'),
           'ciudad' => Tools::getValue('data-ciudad'),
-          'estado' => Tools::getValue('data-estado'),
+          'estado' => Tools::getValue('data-delegacion'),
         );
 
         if (Tools::getValue('action-api') != 'create') {
