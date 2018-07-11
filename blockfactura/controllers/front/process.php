@@ -169,7 +169,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
           'codpos' => Tools::getValue('data-cp'),
           'colonia' => Tools::getValue('data-colonia'),
           'ciudad' => Tools::getValue('data-ciudad'),
-          'estado' => Tools::getValue('data-delegacion'),
+          'estado' => Tools::getValue('data-estado'),
         );
 
         if (Tools::getValue('action-api') != 'create') {
@@ -374,7 +374,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $query->where('o.reference = "'.pSQL($data).'"');
 
         if ($result_carrier = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($query)) {
-            
+
             foreach ($result_carrier as $carrier) {
                 $price = (float) $carrier['shipping_cost_tax_excl'];
                 $round = Tools::ps_round($price, 2);
@@ -438,7 +438,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $seriesget = Curls::frontCurl($this->module->urlapi . 'series', 'get', $this->module->keyapi, $this->module->keysecret);
         $decode_series = Tools::jsonDecode($seriesget, true);
         foreach ($decode_series['data'] as $key => $serie) {
-            
+
             if ($serie['SerieName'] == $this->module->serie) {
                 $id_serie = $serie['SerieID'];
             }
@@ -450,7 +450,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         if (Tools::getValue('usocfdi') != '0') {
             $usocfdi = Tools::getValue('usocfdi');
         }else {
-            $usocfdi = $this->module->u_cfdi; 
+            $usocfdi = $this->module->u_cfdi;
         }
         $params = array(
                  'Receptor' => array('UID' => Tools::getValue('uid')),
