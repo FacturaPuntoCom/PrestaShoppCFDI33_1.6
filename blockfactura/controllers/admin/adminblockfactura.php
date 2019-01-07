@@ -50,7 +50,8 @@ class AdminBlockfacturaController extends ModuleAdminController
 
         $invoices = array();
         // $url = $this->module->urlapi.'invoices';
-        $url = $this->module->urlapi33.'list?=&type_document=factura';
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi33 : $this->module->urlapi33_dev;
+        $url = $url_aux.'list?=&type_document=factura$per_page=1000';
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
 
@@ -79,7 +80,6 @@ class AdminBlockfacturaController extends ModuleAdminController
         }
 
         $url_ajax = $this->context->link->getAdminLink('AdminBlockfactura');
-        //var_dump($url_ajax);
 
         $this->context->smarty->assign(array(
         'content' => $invoices,
@@ -91,7 +91,8 @@ class AdminBlockfacturaController extends ModuleAdminController
     {
         $uid = Tools::getValue('uid');
 
-        $url = $this->module->urlapi33.$uid.'/cancel';
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi33 : $this->module->urlapi33_dev;
+        $url = $url_aux.$uid.'/cancel';
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
 
@@ -102,7 +103,8 @@ class AdminBlockfacturaController extends ModuleAdminController
     {
         $uid = Tools::getValue('uid');
 
-        $url = $this->module->urlapi33.$uid.'/email';
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi33 : $this->module->urlapi33_dev;
+        $url = $url_aux.$uid.'/email';
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
 
