@@ -145,7 +145,8 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
     public function displayAjaxEntryOne()
     {
         $customerRfc = Tools::getValue('rfc');
-        $url = $this->module->urlapi.'clients/'.$customerRfc;
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
+        $url = $url_aux.'clients/'.$customerRfc;
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
         $request = 'get';
@@ -172,14 +173,16 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
           'estado' => Tools::getValue('data-delegacion'),
         );
 
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
+
         if (Tools::getValue('action-api') != 'create') {
             $UID = Tools::getValue('UID');
-            $url = $this->module->urlapi.'clients/'.$UID.'/update';
+            $url = $url_aux.'clients/'.$UID.'/update';
             $keyapi = $this->module->keyapi;
             $keysecret = $this->module->keysecret;
             $request = 'post';
         } else {
-            $url = $this->module->urlapi.'clients/create';
+            $url = $url_aux.'clients/create';
             $keyapi = $this->module->keyapi;
             $keysecret = $this->module->keysecret;
             $request = 'post';
@@ -258,7 +261,8 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
           'total' => Tools::ps_round($total_order, 2),
         );
 
-        $url = $this->module->urlapi.'current/account';
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
+        $url = $url_aux.'current/account';
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
         $request = 'get';
@@ -278,6 +282,9 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             );
         }
 
+        //agregar el uso cdfi
+        $array['uso_cfdi'] = array ('id_uso' => $this->module->u_cfdi);
+
         //Cookies::saveCookie('order', $array['products']);
 
         return die(Tools::jsonEncode($array));
@@ -291,7 +298,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $order_id = (int) $this->context->cookie->Order;
         $order = new Order($order_id);
         $products = $order->getProducts();
-        // var_dump($products);die();
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
 
         $in = 0;
         foreach ($products as &$product) {
@@ -435,29 +442,23 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             $send = true;
         }
 
-        $seriesget = Curls::frontCurl($this->module->urlapi . 'series', 'get', $this->module->keyapi, $this->module->keysecret);
+        $seriesget = Curls::frontCurl($url_aux . 'series', 'get', $this->module->keyapi, $this->module->keysecret);
         $decode_series = Tools::jsonDecode($seriesget, true);
-        foreach ($decode_series['data'] as $key => $serie) {
 
-            if ($serie['SerieName'] == $this->module->serie) {
+        foreach ($decode_series['data'] as $key => $serie) {
+            if ($serie['SerieName'] == $this->module->serie)
                 $id_serie = $serie['SerieID'];
-            }
         }
-        if ($id_serie == '' || $id_serie == null) {
+
+        if ($id_serie == '' || $id_serie == null)
             return die(Tools::jsonEncode(array('response' => 'error', 'message' => 'La serie con que intentas facturar no existe en tu catálogo de series y folios')));
-        }
-        //compruebo si el cliente le pone un uso de cfdi
-        if (Tools::getValue('usocfdi') != '0') {
-            $usocfdi = Tools::getValue('usocfdi');
-        }else {
-            $usocfdi = $this->module->u_cfdi;
-        }
+
         $params = array(
                  'Receptor' => array('UID' => Tools::getValue('uid')),
                  'TipoCfdi' => 'factura',
                  'Redondeo' => 2,
                  'Conceptos' => $products_invoice,
-                 'UsoCFDI' => $usocfdi,
+                 'UsoCFDI' => Tools::getValue('usocfdi'),
                  'Cuenta' => $num_cta,
                  'MetodoPago' => 'PUE',
                  'FormaPago' => Tools::getValue('method'),
@@ -466,12 +467,15 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
                  'Serie' => $id_serie,
                  'EnviarCorreo' => $send,
                );
+
         $dataString = Tools::jsonEncode($params);
-        // var_dump($dataString);die();
-        $url = $this->module->urlapi33.'create';
+        $url_invoice = ($this->module->checkbox_dev == 0) ? $this->module->urlapi33 : $this->module->urlapi33_dev;
+        $url = $url_invoice.'create';
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
         $request = 'post';
+
+
 
         //agregar die por cambio en curl
         return die(Curls::frontCurl($url, $request, $keyapi, $keysecret, $params));
@@ -481,8 +485,9 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
     {
         $response = array();
 
+        $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
         $customerRfc = trim(Tools::getValue('rfc'));
-        $url = $this->module->urlapi.'invoices/'.$customerRfc;
+        $url = $url_aux.'invoices/'.$customerRfc;
         $keyapi = $this->module->keyapi;
         $keysecret = $this->module->keysecret;
         $request = 'get';
