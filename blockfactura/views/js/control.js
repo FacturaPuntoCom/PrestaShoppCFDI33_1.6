@@ -267,6 +267,8 @@ for (var key=0, size=totals.length; key<size; key++){
   $('#invoice-total').text('$ '+totals[key]['total']);
 }
 
+$("#select-usocfdi option[value='"+json.uso_cfdi.id_uso+"']").attr("selected", true);
+
 }
 });
 }
