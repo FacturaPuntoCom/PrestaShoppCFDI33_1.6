@@ -1,6 +1,11 @@
 # PrestaShoppCFDI33_1.6
 Plugin Prestashop 1.6 para nuevo cfdi 3.3
 
+## [3.1.1] - 2019-02-22
+
+### Fixed
+- Se corrigió la descarga de documentos CFDI en panel de administración (producción y sanbox).
+
 ### Fix v3.1
 
 * Selección de ambiente a ejecutar dentro de la configuración del plugin (sandbox, producción).
