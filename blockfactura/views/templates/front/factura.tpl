@@ -322,13 +322,13 @@
 							<td>{l s='Subtotal:' mod='blockfactura'}</td>
 							<td><span id="invoice-subtotal"></span></td>
 						</tr>
-						<!-- <tr id="td-discount" hidden="true">
-							<td>Descuento:</td>
-							<td><span id="invoice-discount"></span></td>
-						</tr> -->
 						<tr>
 							<td>{l s='VAT:' mod='blockfactura'}</td>
 							<td><span id="invoice-iva"></span></td>
+						</tr>
+						<tr id="td-discount" hidden="true">
+							<td>Descuento:</td>
+							<td><span id="invoice-discount"></span></td>
 						</tr>
 						<tr>
 							<td>{l s='Total:' mod='blockfactura'}</td>
