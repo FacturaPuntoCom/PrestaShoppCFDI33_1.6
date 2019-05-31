@@ -197,15 +197,19 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $array = array();
         $data = trim(Tools::getValue('order'));
         $this->context->cookie->__unset('Order');
+        $this->context->cookie->__unset('Discount');
 
-        $sql = 'SELECT id_order, total_products, total_products_wt
+        $sql = 'SELECT id_order, total_products, total_products_wt, total_discounts_tax_excl, total_discounts 
         FROM '._DB_PREFIX_.'orders WHERE reference="'.pSQL($data).'"';
         if ($results = Db::getInstance()->executeS($sql)) {
             foreach ($results as $row) {
                 $order_customer = $row['id_order'];
                 $this->context->cookie->__set('Order', $row['id_order']);
+                $this->context->cookie->__set('Discount', $row['total_discounts_tax_excl']);
                 $subtotal_order = $row['total_products'];
                 $total_order = $row['total_products_wt'];
+                $discount_excl = $row['total_discounts_tax_excl'];
+                $discount = $row['total_discounts'];
             }
         }
 
@@ -254,11 +258,20 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             }
         }
         //var_dump($result_carrier);
+     
+        //add discount
+        if($discount_excl > 0) {
+          $total_full = $total_order - $discount;
+          $subtotal_full = $subtotal_order + ($discount - $discount_excl);
+        } else {
+          $total_full = $total_order;
+          $subtotal_full = $subtotal_order;
+        }
 
         $array['totals'][] = array(
           'subtotal' => Tools::ps_round($subtotal_order, 2),
-          'iva' => Tools::ps_round($total_order - $subtotal_order, 2),
-          'total' => Tools::ps_round($total_order, 2),
+          'iva' => Tools::ps_round($total_order - $subtotal_full, 2),
+          'total' => Tools::ps_round($total_full, 2),
         );
 
         $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
@@ -281,7 +294,9 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             'email' => $bus->email,
             );
         }
-
+        
+        //agregar el total de descuentos
+        $array['descuentos'] = array('descuento' => Tools::ps_round($discount_excl, 2));
         //agregar el uso cdfi
         $array['uso_cfdi'] = array ('id_uso' => $this->module->u_cfdi);
 
@@ -294,8 +309,10 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
     {
         //$products_invoice = Cookies::getCookie('order');
         $products_invoice = array();
+        $flag_discount = false;
 
         $order_id = (int) $this->context->cookie->Order;
+        $discount = (float) $this->context->cookie->Discount;
         $order = new Order($order_id);
         $products = $order->getProducts();
         $url_aux = ($this->module->checkbox_dev == 0) ? $this->module->urlapi : $this->module->urlapi_dev;
@@ -329,11 +346,24 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
                   break;
               }
             }
-
+            
+            //Agregar descuentos en el item productos
+            if($flag_discount) {
+              $set_discount = 0;
+            } else {
+              if($discount > $unit_price * $product['product_quantity'] || $discount == 0) {
+                $set_discount = 0;
+                $flag_discount = false;
+              } else {
+                $set_discount = $discount;
+                $flag_discount = true;
+              }
+            }
+         
             //armar los impuestos por producto
             switch ($product['tax_rate']) {
               case 16:
-                $base_calc = Tools::ps_round($unit_price, 2) * $product['product_quantity'];
+                $base_calc = (Tools::ps_round($unit_price, 2) * $product['product_quantity']) - $set_discount;
                 $decimas = explode(".", $base_calc);
                 //verificamos que no exceda el máximo de decimales
                 if(strlen($decimas[1]) > 6) {
@@ -363,6 +393,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
               'Cantidad' => $product['product_quantity'],
               'Descripcion' => $product['product_name'],
               'ValorUnitario' => Tools::ps_round($unit_price, 2),
+              'Descuento' => $set_discount,
               'Impuestos' => $traslados,
             );
 
