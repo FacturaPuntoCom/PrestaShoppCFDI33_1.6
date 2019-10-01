@@ -1,6 +1,9 @@
 # PrestaShoppCFDI33_1.6
 Plugin Prestashop 1.6 para nuevo cfdi 3.3
 
+### Fix 3.2 - 2019-10-01
+- Fix descarga de archivos, ahora es vía API
+
 ### Fix 3.1.2 - 2019-05-30
 - Fix descuentos (se corrigió)
 
