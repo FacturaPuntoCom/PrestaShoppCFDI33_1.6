@@ -1,6 +1,9 @@
 # PrestaShoppCFDI33_1.6
 Plugin Prestashop 1.6 para nuevo cfdi 3.3
 
+### Fix v3.2.1 - 2019-12-17
+ * Fix envío correcto de razón social cliente
+ 
 ### Fix 3.2 - 2019-10-01
 - Fix descarga de archivos, ahora es vía API
 
