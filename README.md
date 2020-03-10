@@ -1,6 +1,9 @@
 # PrestaShoppCFDI33_1.6
 Plugin Prestashop 1.6 para nuevo cfdi 3.3
 
+### Fix v3.3 - 2020-03-10
+ * Campos requeridos para facturar (email y rfc)
+ 
 ### Fix v3.2.1 - 2019-12-17
  * Fix envío correcto de razón social cliente
  
