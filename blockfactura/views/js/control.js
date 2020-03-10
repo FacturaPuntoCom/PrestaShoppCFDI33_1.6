@@ -175,7 +175,6 @@ function fillFormTwo(data){
   $('#contact-telefono').val(data.Data.Contacto.Telefono);
 
   $('#data-razonsocial').val(data.Data.RazonSocial);
-  $('#data-razoncial').val(data.Data.RazonSocial);
   $('#data-rfc').val(data.Data.RFC);
   $('#data-calle').val(data.Data.Calle);
   $('#data-exterior').val(data.Data.Numero);
@@ -195,26 +194,34 @@ function cleanFormTwo(){
 }
 
 function orderDetail(data){
-  $('#block-two').stop().hide();
-  $("html, body").animate({
+  if($('#contact-email').val() == '' || $('#data-rfc').val() == ''){
+    swal({
+      title: "Campos obligatorios",
+      text: "El email y el RFC no deben estar vacíos",
+      type: 'info',
+      showConfirmButton: true
+    });
+  } else {
+    $('#block-two').stop().hide();
+    $("html, body").animate({
       scrollTop: 0
-  }, 600);
-  $('#bar-progress').fadeIn('100');
-  progress(100, $('#progressBar'));
-$.ajax({
-  type: 'post',
-  url: baseUri+'module/blockfactura/process',
-  data: 'action=clientdetail&'+data,
-  dataType: 'json',
-  success: function(json){
-    get_uid = json.Data.UID;
-    fillViewTree(json);
-    getOrder();
-    $('#bar-progress').stop().hide();
-    $('#block-tree').fadeIn('100');
+    }, 600);
+    $('#bar-progress').fadeIn('100');
+    progress(100, $('#progressBar'));
+    $.ajax({
+      type: 'post',
+      url: baseUri+'module/blockfactura/process',
+      data: 'action=clientdetail&'+data,
+      dataType: 'json',
+      success: function(json){
+        get_uid = json.Data.UID;
+        fillViewTree(json);
+        getOrder();
+        $('#bar-progress').stop().hide();
+        $('#block-tree').fadeIn('100');
+      }
+    });
   }
-
-});
 }
 
 function fillViewTree(data){
@@ -292,10 +299,9 @@ function invoice(rfc, uid, order, method, num_cta,usocfdi){
     data: 'action=invoice&rfc='+rfc+'&uid='+uid+'&order='+order+'&method='+method+'&num_cta='+num_cta+'&usocfdi='+usocfdi,
     dataType: 'json',
     success: function(json){
-      console.log(json);
       if (json.response != 'error') {
-        document.getElementById("btn-pdf").onclick=function(){downloadFile(response[0].UID, 'pdf')};
-        document.getElementById("btn-xml").onclick=function(){downloadFile(response[0].UID, 'xml')};
+        document.getElementById("btn-pdf").onclick=function(){downloadFile(json.uid, 'pdf')};
+        document.getElementById("btn-xml").onclick=function(){downloadFile(json.uid, 'xml')};
         $('#block-tree').stop().hide();
         $('#alerts').stop().hide();
         $('#block-four').removeAttr('hidden');
