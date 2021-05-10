@@ -349,15 +349,18 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
             
             //Agregar descuentos en el item productos
             if($flag_discount) {
-              $set_discount = 0;
-            } else {
-              if($discount > $unit_price * $product['product_quantity'] || $discount == 0) {
                 $set_discount = 0;
-                $flag_discount = false;
-              } else {
-                $set_discount = $discount;
-                $flag_discount = true;
-              }
+            } else {
+                if($discount == 0){
+                    $set_discount = 0;
+                    $flag_discount = true;
+                } else if ($discount > $unit_price * $product['product_quantity']){
+                    $set_discount = $unit_price * $product['product_quantity'];
+                    $discount -= $unit_price * $product['product_quantity'];
+                } else {
+                    $set_discount = $discount;
+                    $discount = 0;
+                }
             }
          
             //armar los impuestos por producto
@@ -365,16 +368,18 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
               case 16:
                 $base_calc = (Tools::ps_round($unit_price, 2) * $product['product_quantity']) - $set_discount;
                 $decimas = explode(".", $base_calc);
+
                 //verificamos que no exceda el máximo de decimales
                 if(strlen($decimas[1]) > 6) {
-                    $base_calc = round($base_calc, 6);
+                    $base_calc = number_format(round($base_calc, 6), 6);
                 }
+
                 $taxes_product[] = array(
                   'Base' => $base_calc,
                   'Impuesto' => '002',
                   'TipoFactor' => 'Tasa',
                   'TasaOCuota' => '0.16',
-                  'Importe' => Tools::ps_round($base_calc * .16, 6)
+                  'Importe' => number_format(Tools::ps_round($base_calc * .16, 6), 6)
                 );
                 $traslados = array('Traslados' => $taxes_product);
               break;
