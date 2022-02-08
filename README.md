@@ -1,6 +1,9 @@
 # PrestaShoppCFDI33_1.6
 Plugin Prestashop 1.6 para nuevo cfdi 3.3
 
+### Fix tasa 0 2021-02-08
+* Se habilitó timbrar con tasa 0
+
 ### Fix v3.3.1 - 2021-05-10
  * Se corrigió la aplicación de descuentos mayores a cualquier subtotal de un tipo de producto.
 
