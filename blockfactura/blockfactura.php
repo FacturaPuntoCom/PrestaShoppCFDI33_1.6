@@ -28,9 +28,9 @@ class BlockFactura extends Module
     public $serie;
     public $days;
     public $urlapi;
-    public $urlapi33;
+    public $urlapi40;
     public $urlapi_dev;
-    public $urlapi33_dev;
+    public $urlapi40_dev;
     public $urlpub;
     public $urlpub_dev;
     public $encabezado;
@@ -103,13 +103,13 @@ class BlockFactura extends Module
 
         //urls_producción
         $this->urlapi = 'https://factura.com/api/v1/';
-        $this->urlapi33 = 'https://factura.com/api/v3/cfdi33/';
-        $this->urlpub = 'https://factura.com/api/publica/cfdi33/';
+        $this->urlapi40 = 'https://factura.com/api/v3/cfdi40/';
+        $this->urlpub = 'https://factura.com/api/publica/cfdi40/';
 
         //urls_sandbox
-        $this->urlapi_dev = 'http://devfactura.in/api/v1/';
-        $this->urlapi33_dev = 'http://devfactura.in/api/v3/cfdi33/';
-        $this->urlpub_dev = 'http://devfactura.in/api/publica/cfdi33/';
+        $this->urlapi_dev = 'https://sandbox.factura.com/api/v1/';
+        $this->urlapi40_dev = 'https://sandbox.factura.com/api/v3/cfdi40/';
+        $this->urlpub_dev = 'https://sandbox.factura.com/api/publica/cfdi40/';
     }
 
     public function install()
@@ -351,8 +351,8 @@ class BlockFactura extends Module
             'name' => $this->l('Pagos por servicios educativos (colegiaturas)'),
           ),
           array(
-            'id_option' => 'P01',
-            'name' => $this->l('Por definir'),
+            'id_option' => 'S01',
+            'name' => $this->l('Sin efectos fiscales'),
           ),
         );
 
