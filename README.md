@@ -1,5 +1,8 @@
 # PrestaShoppCFDI33_1.6
-Plugin Prestashop 1.6 para nuevo cfdi 3.3
+Plugin Prestashop 1.6 para nuevo cfdi 4.0
+
+### Feature CFDI 4.0 - 2022-04-11
+ * Se cambió la versión del cfdi 3.3 por únicamente la 4.0
 
 ### Fix v3.3.1 - 2021-05-10
  * Se corrigió la aplicación de descuentos mayores a cualquier subtotal de un tipo de producto.
