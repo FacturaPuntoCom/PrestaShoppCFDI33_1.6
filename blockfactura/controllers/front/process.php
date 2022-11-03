@@ -311,6 +311,7 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
         $products_invoice = array();
         $flag_discount = false;
 
+        $emptyDiscount = false;  //bandera para indicar que hay descuento a aplicar
         $order_id = (int) $this->context->cookie->Order;
         $discount = (float) $this->context->cookie->Discount;
         $order = new Order($order_id);
@@ -357,9 +358,17 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
                 } else if ($discount > $unit_price * $product['product_quantity']){
                     $set_discount = $unit_price * $product['product_quantity'];
                     $discount -= $unit_price * $product['product_quantity'];
+                    $set_discount = ($unit_price * $product['product_quantity'])-0.01; //se evita tener campo base traslado igual a 0
+                    $discount -= ($unit_price * $product['product_quantity'])-0.01;
+                    $emptyDiscount = true;
+                } else if($discount == $unit_price * $product['product_quantity']){
+                    $set_discount = ($unit_price * $product['product_quantity'])-0.01; //se evita tener campo base traslado igual a 0
+                    $discount = 0;
+                    $emptyDiscount = true;
                 } else {
                     $set_discount = $discount;
                     $discount = 0;
+                    $emptyDiscount = true;
                 }
             }
          
@@ -418,6 +427,10 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
               'Descuento' => $set_discount,
               'Impuestos' => $traslados,
             );
+        }
+        
+        if($discount > 0 && $emptyDiscount){
+            return die(Tools::jsonEncode(array('response' => 'error', 'message' => 'El descuento no debe ser mayor al subtotal')));
         }
 
         //método para obtener los gastos de envío
