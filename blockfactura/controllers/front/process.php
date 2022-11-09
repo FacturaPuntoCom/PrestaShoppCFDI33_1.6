@@ -355,16 +355,17 @@ class BlockfacturaProcessModuleFrontController extends ModuleFrontController
                 if($discount == 0){
                     $set_discount = 0;
                     $flag_discount = true;
-                } else if ($discount > $unit_price * $product['product_quantity']){
-                    $set_discount = ($unit_price * $product['product_quantity'])-0.01; //se evita tener campo base traslado igual a 0
-                    $discount -= ($unit_price * $product['product_quantity'])-0.01;
+                } else if ($discount > Tools::ps_round($unit_price, 2) * $product['product_quantity']){
+                    $set_discount = Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2); //se evita tener campo base traslado igual a 0
+                    $discount -= Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2);
+                    $discount = Tools::ps_round($discount, 2);
                     $emptyDiscount = true;
-                } else if($discount == $unit_price * $product['product_quantity']){
-                    $set_discount = ($unit_price * $product['product_quantity'])-0.01; //se evita tener campo base traslado igual a 0
+                } else if($discount == Tools::ps_round($unit_price, 2) * $product['product_quantity']){
+                    $set_discount = Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2); //se evita tener campo base traslado igual a 0
                     $discount = 0;
                     $emptyDiscount = true;
                 } else {
-                    $set_discount = $discount;
+                    $set_discount = Tools::ps_round($discount, 2);
                     $discount = 0;
                     $emptyDiscount = true;
                 }

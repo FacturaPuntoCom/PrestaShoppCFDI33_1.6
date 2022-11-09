@@ -91,6 +91,7 @@ class AdminInvoicesbyblockController extends ModuleAdminController
         $query->from('orders');
         $query->where("reference = '".$orderReference."'");
         $order_id = "";
+        $emptyDiscount = false;  //bandera para indicar que hay descuento a aplicar
 
         if ($results = Db::getInstance()->executeS($query)) {
             foreach ($results as $row) {
@@ -145,12 +146,20 @@ class AdminInvoicesbyblockController extends ModuleAdminController
                 if($discount == 0){
                     $set_discount = 0;
                     $flag_discount = true;
-                } else if ($discount > $unit_price * $product['product_quantity']){
-                    $set_discount = $unit_price * $product['product_quantity'];
-                    $discount -= $unit_price * $product['product_quantity'];
-                } else {
-                    $set_discount = $discount;
+                } else if ($discount > Tools::ps_round($unit_price, 2) * $product['product_quantity']){
+                    $set_discount = Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2); //se evita tener campo base traslado igual a 0
+                    $discount -= Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2);
+                    $discount = Tools::ps_round($discount, 2);
+                    $emptyDiscount = true;
+                } else if($discount == Tools::ps_round($unit_price, 2) * $product['product_quantity']){
+                    $set_discount = Tools::ps_round((Tools::ps_round($unit_price, 2) * $product['product_quantity'])-0.01, 2); //se evita tener campo base traslado igual a 0
                     $discount = 0;
+                    $emptyDiscount = true;
+                } else {
+                    $set_discount = Tools::ps_round($discount, 2);
+                    //$set_discount = $discount;
+                    $discount = 0;
+                    $emptyDiscount = true;
                 }
             }
          
@@ -209,6 +218,10 @@ class AdminInvoicesbyblockController extends ModuleAdminController
               'Descuento' => $set_discount,
               'Impuestos' => $traslados,
             );
+        }
+
+        if($discount > 0 && $emptyDiscount){
+          return die(Tools::jsonEncode(array('response' => 'error', 'message' => 'El descuento de uno de los pedidos excede el subtotal')));
         }
 
         //método para obtener los gastos de envío
