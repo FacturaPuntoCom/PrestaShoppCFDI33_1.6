@@ -277,36 +277,38 @@
 
 				<div class="row">
 					<div class="input-group">
-							<label for="select-payment"  style="font-size: 18px;">* {l s='Payment method' mod='blockfactura'}  &nbsp;</label>
-									<select id="select-payment" class="input-cap f-input f-select">
-										<option value="0">{l s='Select an option' mod='blockfactura'}</option>
-										<option value="01">{l s='Cash' mod='blockfactura'}</option>
-										<option value="02">{l s='Paycheck' mod='blockfactura'}</option>
-										<option value="03">{l s='Electronic funds transfer' mod='blockfactura'}</option>
-										<option value="04">{l s='Credit card' mod='blockfactura'}</option>
-										<option value="05">{l s='Electronic wallet' mod='blockfactura'}</option>
-										<option value="06">{l s='Electronic cash' mod='blockfactura'}</option>
-										<option value="08">{l s='Food stamps' mod='blockfactura'}</option>
-										<option value="12">{l s='Payment in' mod='blockfactura'}</option>
-										<option value="13">{l s='Payment by subrogation' mod='blockfactura'}</option>
-										<option value="14">{l s='Payment by consignment' mod='blockfactura'}</option>
-										<option value="15">{l s='Condonation' mod='blockfactura'}</option>
-										<option value="17">{l s='Compensation' mod='blockfactura'}</option>
-										<option value="23">{l s='Novation' mod='blockfactura'}</option>
-										<option value="24">{l s='Confution' mod='blockfactura'}</option>
-										<option value="25">{l s='Debt remittances' mod='blockfactura'}</option>
-										<option value="26">{l s='Prescription or expiration' mod='blockfactura'}</option>
-										<option value="27">{l s='To the satisfaction of the creditor' mod='blockfactura'}</option>
-										<option value="28">{l s='Debit card' mod='blockfactura'}</option>
-										<option value="29">{l s='Service card' mod='blockfactura'}</option>
-										<option value="99">{l s='No data' mod='blockfactura'}</option>
-									</select>
+						<label for="select-payment"  style="font-size: 18px;">* {l s='Payment method' mod='blockfactura'}  &nbsp;</label>
+						<select id="select-payment" class="input-cap f-input f-select">
+							<option value="0">{l s='Select an option' mod='blockfactura'}</option>
+							<option value="01">{l s='Cash' mod='blockfactura'}</option>
+							<option value="02">{l s='Paycheck' mod='blockfactura'}</option>
+							<option value="03">{l s='Electronic funds transfer' mod='blockfactura'}</option>
+							<option value="04">{l s='Credit card' mod='blockfactura'}</option>
+							<option value="05">{l s='Electronic wallet' mod='blockfactura'}</option>
+							<option value="06">{l s='Electronic cash' mod='blockfactura'}</option>
+							<option value="08">{l s='Food stamps' mod='blockfactura'}</option>
+							<option value="12">{l s='Payment in' mod='blockfactura'}</option>
+							<option value="13">{l s='Payment by subrogation' mod='blockfactura'}</option>
+							<option value="14">{l s='Payment by consignment' mod='blockfactura'}</option>
+							<option value="15">{l s='Condonation' mod='blockfactura'}</option>
+							<option value="17">{l s='Compensation' mod='blockfactura'}</option>
+							<option value="23">{l s='Novation' mod='blockfactura'}</option>
+							<option value="24">{l s='Confution' mod='blockfactura'}</option>
+							<option value="25">{l s='Debt remittances' mod='blockfactura'}</option>
+							<option value="26">{l s='Prescription or expiration' mod='blockfactura'}</option>
+							<option value="27">{l s='To the satisfaction of the creditor' mod='blockfactura'}</option>
+							<option value="28">{l s='Debit card' mod='blockfactura'}</option>
+							<option value="29">{l s='Service card' mod='blockfactura'}</option>
+							<option value="30">{l s='Application of advances' mod='blockfactura'}</option>
+							<option value="31">{l s='Payment intermediary' mod='blockfactura'}</option>
+							<option value="99">{l s='to define' mod='blockfactura'}</option>
+						</select>
 					</div>
 					<br>
 					<br>
-						<div id="num-cta-box" hidden="true">
-									<label for="f-num-cta" style="width: 285px; font-size: 14px">{l s='Last 4 digits of your account or card' mod='blockfactura'}</label>
-									<input type="text"  id="f-num-cta" class="form-control" name="f-num-cta" placeholder="####" size="5" maxlength="4" />
+					<div id="num-cta-box" hidden="true">
+						<label for="f-num-cta" style="width: 285px; font-size: 14px">{l s='Last 4 digits of your account or card' mod='blockfactura'}</label>
+						<input type="text"  id="f-num-cta" class="form-control" name="f-num-cta" placeholder="####" size="5" maxlength="4" />
 					</div>
 				</div>
 
